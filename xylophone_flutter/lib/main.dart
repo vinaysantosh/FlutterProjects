@@ -34,17 +34,10 @@ class XylophoneApp extends StatelessWidget {
         backgroundColor: Colors.black,
         body: SafeArea(
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                buildButton(1, Colors.red),
-                buildButton(2, Colors.orange),
-                buildButton(3, Colors.yellow),
-                buildButton(4, Colors.green),
-                buildButton(5, Colors.greenAccent),
-                buildButton(6, Colors.blue),
-                buildButton(7, Colors.purple),
-              ],
+            child: TextButton(
+              onPressed: () {
+                player.play('note1.wav');
+              }, child: Text("Click Me!!"),
             ),
           ),
         ),

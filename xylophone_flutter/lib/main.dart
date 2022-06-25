@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 void main() => runApp(XylophoneApp());
 
 class XylophoneApp extends StatelessWidget {
-
   final player = AudioCache();
   @override
   Widget build(BuildContext context) {
@@ -15,7 +14,8 @@ class XylophoneApp extends StatelessWidget {
             child: TextButton(
               onPressed: () {
                 player.play('note1.wav');
-              }, child: Text("Click Me!!"),
+              },
+              child: Text("Click Me! !"),
             ),
           ),
         ),

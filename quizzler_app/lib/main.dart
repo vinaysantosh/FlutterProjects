@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:quizzler_app/question.dart';
+import 'quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+
+QuizBrain quizBrain = new QuizBrain();
 
 void main() => runApp(Quizzler());
 
@@ -28,13 +31,26 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Widget> scoreKeeper = [];
 
-  List<Question> questions = [
-    Question(q: 'You can lead a cow down stairs but not up stairs.', a: false),
-    Question(q: 'Approximately one quarter of human bones are in the feet.', a: true),
-    Question(q: 'A slug\'s blood is green.', a: true)
-  ];
 
-  int currentIndex = 0;
+  String currentQuestion = quizBrain.nextQuestion();
+
+  void updateState(bool userAnswer)
+  {
+    if (currentQuestion != "")
+    {
+      setState(() {
+        scoreKeeper.add(quizBrain.checkAnswer(userAnswer));
+        currentQuestion = quizBrain.nextQuestion();
+      });
+    }
+    else
+    {
+      Alert(context: context, title: "Game Over", desc: "You have reached the end of the questions").show();
+    }
+
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +64,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questions[currentIndex].questionText,
+                currentQuestion,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -73,21 +89,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked true.
-                setState(() {
-                  if (questions[currentIndex].questionAnswer == true)
-                    {
-                      scoreKeeper.add(Icon(Icons.check, color: Colors.green));
-                    }
-                  else
-                    {
-                      scoreKeeper.add(Icon(Icons.close, color: Colors.red));
-                    }
-                  currentIndex = currentIndex + 1;
-                  if (currentIndex>(questions.length-1))
-                    {
-                      currentIndex = 0;
-                    }
-                });
+                updateState(true);
 
               },
             ),
@@ -107,22 +109,7 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
-                setState(() {
-                  if (questions[currentIndex].questionAnswer == false)
-                  {
-                    scoreKeeper.add(Icon(Icons.check, color: Colors.green));
-                  }
-                  else
-                  {
-                    scoreKeeper.add(Icon(Icons.close, color: Colors.red));
-                  }
-                  currentIndex = currentIndex + 1;
-                  if (currentIndex>(questions.length-1))
-                  {
-                    currentIndex = 0;
-                  }
-                });
-
+                updateState(true);
               },
             ),
           ),

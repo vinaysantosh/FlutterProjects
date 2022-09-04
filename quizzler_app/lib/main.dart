@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quizzler_app/question.dart';
 
 void main() => runApp(Quizzler());
 
@@ -25,6 +26,16 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  List<Widget> scoreKeeper = [];
+
+  List<Question> questions = [
+    Question(q: 'You can lead a cow down stairs but not up stairs.', a: false),
+    Question(q: 'Approximately one quarter of human bones are in the feet.', a: true),
+    Question(q: 'A slug\'s blood is green.', a: true)
+  ];
+
+  int currentIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,7 +48,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go.',
+                questions[currentIndex].questionText,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -62,6 +73,22 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked true.
+                setState(() {
+                  if (questions[currentIndex].questionAnswer == true)
+                    {
+                      scoreKeeper.add(Icon(Icons.check, color: Colors.green));
+                    }
+                  else
+                    {
+                      scoreKeeper.add(Icon(Icons.close, color: Colors.red));
+                    }
+                  currentIndex = currentIndex + 1;
+                  if (currentIndex>(questions.length-1))
+                    {
+                      currentIndex = 0;
+                    }
+                });
+
               },
             ),
           ),
@@ -80,11 +107,29 @@ class _QuizPageState extends State<QuizPage> {
               ),
               onPressed: () {
                 //The user picked false.
+                setState(() {
+                  if (questions[currentIndex].questionAnswer == false)
+                  {
+                    scoreKeeper.add(Icon(Icons.check, color: Colors.green));
+                  }
+                  else
+                  {
+                    scoreKeeper.add(Icon(Icons.close, color: Colors.red));
+                  }
+                  currentIndex = currentIndex + 1;
+                  if (currentIndex>(questions.length-1))
+                  {
+                    currentIndex = 0;
+                  }
+                });
+
               },
             ),
           ),
         ),
-        //TODO: Add a Row here as your score keeper
+        Row(
+          children: scoreKeeper,
+        ),
       ],
     );
   }
